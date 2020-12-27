@@ -1,12 +1,20 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 /**
  * @author Evert
  */
 
 public class HomePage extends Page {
+    @FindBy(id = "login")
+    private WebElement loginButton;
+
+    @FindBy(linkText = "My Contacts")
+    private WebElement toContactsButton;
+
     public HomePage (WebDriver driver) {
         super(driver);
         this.driver.get(path+"?command=Home");
@@ -20,8 +28,7 @@ public class HomePage extends Page {
         fillOutField("userid", userid);
         fillOutField("password", password);
 
-        WebElement submit = driver.findElement(By.id("login"));
-        submit.click();
+        loginButton.click();
     }
 
     private void fillOutField(String idName, String value) {
@@ -30,8 +37,8 @@ public class HomePage extends Page {
         field.sendKeys(value);
     }
 
-    public void toContacts(){
-        WebElement webElement = driver.findElement(By.linkText("Contacts"));
-        webElement.click();
+    public ContactPage toContacts(){
+        toContactsButton.click();
+        return PageFactory.initElements(driver, ContactPage.class);
     }
 }
